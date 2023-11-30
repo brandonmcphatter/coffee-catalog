@@ -1,4 +1,6 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const coffeeData = [
     {id: 1, name: 'Light City', roast: 'light'},
@@ -28,24 +30,24 @@ function App() {
                 <CoffeeEditor/>
             </Main>
 
-            <footer className="footer">
-                <p>Created by Brandon</p>
-            </footer>
+            <Footer/>
         </div>
     );
 }
 
 function Header() {
     return (
-        <header className='App-header'>
+        <header className='text-center bg-warning py-1 mb-3'>
             <h1>Coffee Catalog</h1>
+            <p>The Perfect Way to Start Your Day!</p>
         </header>
     );
 }
 
+
 function Main({children}) {
     return (
-        <main className="main">
+        <main className="main container d-flex">
             {children}
         </main>
     );
@@ -53,10 +55,11 @@ function Main({children}) {
 
 function CoffeeDisplay({coffeeData, children}) {
     return (
-        <div className='coffee-display'>
+        <div className='d-flex flex-wrap align-content-start'>
             {children}
             {coffeeData.map((coffee) =>
-                <Coffee id={coffee.id}
+                <Coffee key={coffee.id}
+                        id={coffee.id}
                         name={coffee.name}
                         roast={coffee.roast}/>)
             }
@@ -66,7 +69,7 @@ function CoffeeDisplay({coffeeData, children}) {
 
 function CoffeeEditor() {
     return (
-        <div className='coffee-editor'>
+        <div className=''>
             <CoffeeSearcher/>
             <CoffeeAdder/>
         </div>
@@ -75,40 +78,66 @@ function CoffeeEditor() {
 
 function Coffee({id, name, roast}) {
     return (
-        <div className='coffee'>
-                <h4 className='name'>{name}</h4>
-                <p className='roast'>{roast}</p>
+        <div className='d-flex flex-wrap my-2 w-50'>
+            <h4 className='text-wrap mb-0'>{name}</h4>
+            <p className='ms-1 mt-1 text-danger'>{roast}</p>
         </div>
     )
 }
 
 function CoffeeSearcher() {
     return (
-        <div className='coffee-input'>
-            <form className='filter'>
-                <div className='flex'>
-                    <label htmlFor="roast-selection">Roast</label>
+        <section className="container d-flex flex-column">
+            <form>
+                <div className="container d-flex flex-column">
+                    <label htmlFor="roast-selection" className="fw-bold mb-1">Roast</label>
                     <select id="roast-selection" className="custom-select py-1">
                         <option id="all">All</option>
                         <option id="light">Light</option>
                         <option id="medium">Medium</option>
                         <option id="dark">Dark</option>
                     </select>
-                    <div className='flex'>
-                        <label>Coffee Name</label>
-                        <input id="coffeeDisplay" type="text" name="coffee name" placeholder="Start typing..."/>
-                    </div>
+                    <label className="mt-2 fw-bold mb-1">Coffee Name</label>
+                    <input id="coffeeDisplay" type="text" name="coffee name" placeholder="Start typing..."/>
                 </div>
-                <div>
-                    <input id="submit" type="submit"/>
+                <div className="container mt-3">
+                    <input className="btn-primary w-100" id="submit" type="submit"/>
                 </div>
             </form>
-        </div>
+            <hr/>
+        </section>
     )
 }
 
-function CoffeeAdder(){
+function CoffeeAdder() {
+    return (
+        <section className="container d-flex flex-column ">
+            <h2 className="text-center add-a-coffee">Add a Coffee <i className="fa-solid fa-mug-saucer"></i></h2>
+            <form className="add-new-coffee">
+                <div className="container d-flex flex-column">
+                    <label htmlFor="roast-selection" className="fw-bold mb-1">Roast</label>
+                    <select id="roast-selection-2" className="custom-select py-1">
+                        <option>Light</option>
+                        <option>Medium</option>
+                        <option>Dark</option>
+                    </select>
+                    <label className="mt-2 fw-bold mb-1">Name</label>
+                    <input className="new-coffee-added" type="text" name="name" placeholder="Place your order..."/>
+                </div>
+                <div className="container mt-3">
+                    <input className="btn-primary w-100" id="add-coffee" type="submit"/>
+                </div>
+            </form>
+        </section>
+    )
+}
 
+function Footer() {
+    return (
+        <footer className="footer d-flex flex-column align-items-center p-3 text-center bg-warning  mt-2">
+            <p>Created by Brandon</p>
+        </footer>
+    )
 }
 
 export default App;
