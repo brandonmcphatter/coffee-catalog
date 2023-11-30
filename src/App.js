@@ -76,11 +76,9 @@ function CoffeeEditor() {
 function Coffee({id, name, roast}) {
     return (
         <div className='coffee'>
-            <p>
-                <span><b>{name}</b></span><span><em>{roast}</em></span>
-            </p>
+                <h4 className='name'>{name}</h4>
+                <p className='roast'>{roast}</p>
         </div>
-
     )
 }
 
