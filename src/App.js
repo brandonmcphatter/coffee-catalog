@@ -73,8 +73,15 @@ function Main({children}) {
 function CoffeeDisplay({coffeeList, roastSelection, children, query}) {
 
     function displayRightCoffee() {
-        if (query !== '') {
-            return coffeeList.filter((coffee) => coffee.name.toLowerCase().includes(query.toLowerCase()))
+        if (query !== '' && roastSelection !== 'all') {
+            return coffeeList.filter(coffee => coffee.roast === roastSelection)
+                .filter((coffee) => coffee.name
+                    .toLowerCase()
+                    .includes(query.toLowerCase()))
+        } else if (query !== '' && roastSelection === 'all') {
+            return coffeeList.filter((coffee) => coffee.name
+                .toLowerCase()
+                .includes(query.toLowerCase()))
         } else if (roastSelection === 'all') {
             return coffeeList
         } else if (roastSelection === 'light') {
@@ -96,7 +103,7 @@ function CoffeeDisplay({coffeeList, roastSelection, children, query}) {
 
 function Coffee({name, roast}) {
     return (
-        <div className='d-flex flex-wrap my-2 w-50'>
+        <div className='d-flex flex-column flex-wrap my-2 w-50'>
             <h4 className='text-wrap mb-0'>{name}</h4>
             <p className='ms-1 mt-1 text-danger'>{roast}</p>
         </div>
@@ -141,26 +148,32 @@ function CoffeeSearcher({roastSelection, setRoast, query, setQuery, handleCoffee
     )
 }
 
-function CoffeeAdder({coffeeList, setNewCoffee, handleAddCoffee}) {
+function CoffeeAdder({coffeeList, setCoffees}) {
 
-    const newCoffee = {
-        id: coffeeList.length + 1,
-        name: 'Test',
-        roast: ''
-    };
-    function handleAdd() {
-        handleAddCoffee(newCoffee);
+const [newCoffee, setNewCoffee] = useState({id: coffeeList.length, name: '', roast: 'light'});
+
+    function handleAdd( userCoffee) {
+        if (userCoffee.name === '') {
+            console.log('Please enter a name for your coffee');
+            alert('Please enter a name for your coffee');
+        } else {
+        setCoffees([...coffeeList, userCoffee])
+        alert('Your coffee has been added!')
+        }
+
+
 
     }
 
     return (
         <section className="container d-flex flex-column ">
             <h2 className="text-center add-a-coffee">Add a Coffee <i className="fa-solid fa-mug-saucer"></i></h2>
-            <form className="add-new-coffee" onSubmit={() => handleAddCoffee}>
+            <form className="add-new-coffee">
                 <div className="container d-flex flex-column">
                     <label htmlFor="roast-selection" className="fw-bold mb-1">Roast</label>
                     <select id="roast-selection-2"
                             value={newCoffee.roast}
+                            onChange={(e) => setNewCoffee({...newCoffee, roast: e.target.value})}
                             className="custom-select py-1"
                             >
                         < option>light< /option>
@@ -175,7 +188,10 @@ function CoffeeAdder({coffeeList, setNewCoffee, handleAddCoffee}) {
                            placeholder="Name your coffee..."/>
                 </div>
                 <div className="container mt-3">
-                    <input className="btn-primary w-100" id="add-coffee" type="submit" onClick={handleAdd}/>
+                    <button className="btn-primary w-100" id="add-coffee" type="button" onClick={()=>handleAdd(newCoffee)}>
+                        Add Coffee
+                    </button>
+
                 </div>
             </form>
         </section>
