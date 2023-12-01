@@ -23,11 +23,6 @@ function App() {
     ]);
     const [roastSelection, setRoastSelection] = useState('all');
     const [query, setQuery] = useState('');
-    const [newCoffee, setNewCoffee] = useState({
-        id: coffeeList.length + 1,
-        name: 'Test Coffee',
-        roast: 'Dark'
-    });
 
     return (
         <div className="App">
@@ -47,9 +42,7 @@ function App() {
                                     query={query}
                                     setQuery={setQuery}
                     />
-                    <CoffeeAdder newCoffee={newCoffee}
-                                 setNewCoffee={setNewCoffee}
-                                 coffeeList={coffeeList}
+                    <CoffeeAdder coffeeList={coffeeList}
                                  setCoffees={setCoffeeList}
                     />
                 </CoffeeEditor>
@@ -77,28 +70,26 @@ function Main({children}) {
     );
 }
 
-function CoffeeDisplay({coffeeList, roastSelection, query, setCoffees, children}) {
+function CoffeeDisplay({coffeeList, roastSelection, children, query}) {
+
+    function displayRightCoffee() {
+        if (query !== '') {
+            return coffeeList.filter((coffee) => coffee.name.toLowerCase().includes(query.toLowerCase()))
+        } else if (roastSelection === 'all') {
+            return coffeeList
+        } else if (roastSelection === 'light') {
+            return coffeeList.filter((coffee) => coffee.roast === 'light')
+        } else if (roastSelection === 'medium') {
+            return coffeeList.filter((coffee) => coffee.roast === 'medium')
+        } else if (roastSelection === 'dark') {
+            return coffeeList.filter((coffee) => coffee.roast === 'dark')
+        }
+    }
 
     return (
-        <div className='d-flex flex-wrap align-content-start'>
+        <div className='d-flex w-75 mx-0 flex-wrap align-content-start'>
             {children}
-
-
-            {roastSelection === 'all'
-                ? coffeeList.map((coffee) =>
-                    <Coffee key={coffee.id}
-                            id={coffee.id}
-                            name={coffee.name}
-                            roast={coffee.roast}/>)
-                : coffeeList.filter((coffee) => coffee.roast === roastSelection)
-                    .map((coffee) =>
-                        <Coffee key={coffee.id}
-                                id={coffee.id}
-                                name={coffee.name}
-                                roast={coffee.roast}/>
-                    )
-            }
-
+            {displayRightCoffee().map((coffee) => (<Coffee key={coffee.id} name={coffee.name} roast={coffee.roast}/>))}
         </div>
     )
 }
@@ -112,9 +103,7 @@ function Coffee({name, roast}) {
     )
 }
 
-function CoffeeEditor({
-                          children
-                      }) {
+function CoffeeEditor({children}) {
     return (
         <div className=''>
             {children}
@@ -123,13 +112,12 @@ function CoffeeEditor({
 }
 
 
-function CoffeeSearcher({
-                            roastSelection, setRoast, query, setQuery, handleCoffeeSearch
-                        }) {
+function CoffeeSearcher({roastSelection, setRoast, query, setQuery, handleCoffeeSearch}) {
 
 
     return (
         <section className="container d-flex flex-column">
+            <h2 className="text-center add-a-coffee">Coffee Filter <i className="fa-solid fa-mug-saucer"></i></h2>
             <form>
                 <div className="container d-flex flex-column">
                     <label htmlFor="roast-selection" className="fw-bold mb-1">Roast</label>
@@ -147,22 +135,22 @@ function CoffeeSearcher({
                     <input id="coffeeDisplay" type="text" name="coffee name" value={query}
                            onChange={e => setQuery(e.target.value)} placeholder="Start typing..."/>
                 </div>
-                <div className="container mt-3">
-                    <input className="btn-primary w-100" id="submit" type="submit" onSubmit={handleCoffeeSearch}/>
-                </div>
             </form>
             <hr/>
         </section>
     )
 }
 
-function CoffeeAdder({newCoffee, setNewCoffee, setCoffees, coffeeList}) {
+function CoffeeAdder({coffeeList, setNewCoffee, handleAddCoffee}) {
 
-    function handleAddCoffee() {
+    const newCoffee = {
+        id: coffeeList.length + 1,
+        name: 'Test',
+        roast: ''
+    };
+    function handleAdd() {
+        handleAddCoffee(newCoffee);
 
-        setCoffees([...coffeeList, newCoffee]);
-
-        console.log(coffeeList)
     }
 
     return (
@@ -174,9 +162,7 @@ function CoffeeAdder({newCoffee, setNewCoffee, setCoffees, coffeeList}) {
                     <select id="roast-selection-2"
                             value={newCoffee.roast}
                             className="custom-select py-1"
-                            onChange={(event) =>
-                                setNewCoffee(
-                                    {...newCoffee, roast: event.target.value})}>
+                            >
                         < option>light< /option>
                         <option>medium</option>
                         <option>dark</option>
@@ -189,7 +175,7 @@ function CoffeeAdder({newCoffee, setNewCoffee, setCoffees, coffeeList}) {
                            placeholder="Name your coffee..."/>
                 </div>
                 <div className="container mt-3">
-                    <input className="btn-primary w-100" id="add-coffee" type="submit" onSubmit={handleAddCoffee}/>
+                    <input className="btn-primary w-100" id="add-coffee" type="submit" onClick={handleAdd}/>
                 </div>
             </form>
         </section>
