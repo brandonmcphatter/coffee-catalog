@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/coffee-catalog/static/css/main.ead6b82e.css",
+    "main.js": "/coffee-catalog/static/js/main.b45f774b.js",
+    "index.html": "/coffee-catalog/index.html",
+    "main.ead6b82e.css.map": "/coffee-catalog/static/css/main.ead6b82e.css.map",
+    "main.b45f774b.js.map": "/coffee-catalog/static/js/main.b45f774b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ead6b82e.css",
+    "static/js/main.b45f774b.js"
+  ]
+}
