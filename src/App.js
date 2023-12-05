@@ -103,9 +103,9 @@ function CoffeeDisplay({coffeeList, roastSelection, children, query}) {
 
 function Coffee({name, roast}) {
     return (
-        <div className='d-flex flex-column flex-wrap my-2 w-50'>
-            <h4 className='text-wrap mb-0'>{name}</h4>
-            <p className='ms-1 mt-1 text-danger'>{roast}</p>
+        <div className='coffee '>
+            <h5 className='text-center'>{name}</h5>
+            <p className='text-center mb-0'>{roast}</p>
         </div>
     )
 }
@@ -150,17 +150,16 @@ function CoffeeSearcher({roastSelection, setRoast, query, setQuery, handleCoffee
 
 function CoffeeAdder({coffeeList, setCoffees}) {
 
-const [newCoffee, setNewCoffee] = useState({id: coffeeList.length, name: '', roast: 'light'});
+    const [newCoffee, setNewCoffee] = useState({id: coffeeList.length, name: '', roast: 'light'});
 
-    function handleAdd( userCoffee) {
+    function handleAdd(userCoffee) {
         if (userCoffee.name === '') {
             console.log('Please enter a name for your coffee');
             alert('Please enter a name for your coffee');
         } else {
-        setCoffees([...coffeeList, userCoffee])
-        alert('Your coffee has been added!')
+            setCoffees([...coffeeList, userCoffee])
+            alert('Your coffee has been added!')
         }
-
 
 
     }
@@ -175,7 +174,7 @@ const [newCoffee, setNewCoffee] = useState({id: coffeeList.length, name: '', roa
                             value={newCoffee.roast}
                             onChange={(e) => setNewCoffee({...newCoffee, roast: e.target.value})}
                             className="custom-select py-1"
-                            >
+                    >
                         < option>light< /option>
                         <option>medium</option>
                         <option>dark</option>
@@ -188,7 +187,8 @@ const [newCoffee, setNewCoffee] = useState({id: coffeeList.length, name: '', roa
                            placeholder="Name your coffee..."/>
                 </div>
                 <div className="container mt-3">
-                    <button className="btn-primary w-100" id="add-coffee" type="button" onClick={()=>handleAdd(newCoffee)}>
+                    <button className="btn-primary w-100" id="add-coffee" type="button"
+                            onClick={() => handleAdd(newCoffee)}>
                         Add Coffee
                     </button>
 
